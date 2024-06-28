@@ -8,6 +8,7 @@ import (
 )
 
 type UserService struct {
+	service.UserServiceServer
 }
 
 func NewUserService() *UserService {
@@ -46,3 +47,6 @@ func (u *UserService) UserRegister(ctx context.Context, req *service.UserRequest
 	return resp, nil
 
 }
+
+// mustEmbedUnimplementedUserServiceServer 是 gRPC 自动生成的方法，用于确保接口完整实现
+func (u *UserService) mustEmbedUnimplementedUserServiceServer() {}

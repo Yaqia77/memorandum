@@ -7,9 +7,10 @@ import (
 	"strings"
 	"time"
 
+	"context"
+
 	"github.com/sirupsen/logrus"
 	"go.etcd.io/etcd/clientv3"
-	"context"
 )
 
 // Server 服务信息
@@ -53,7 +54,7 @@ func (r *Register) Register(srvInfo Server, ttl int64) (chan<- struct{}, error) 
 	if err = r.register(); err != nil {
 		return nil, err
 	}
-	
+
 	r.closeCh = make(chan struct{})
 	go r.keepAlive()
 	return r.closeCh, nil
