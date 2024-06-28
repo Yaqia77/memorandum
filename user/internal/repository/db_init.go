@@ -1,6 +1,7 @@
 package repository
 
 import (
+	"fmt"
 	"strings"
 	"time"
 
@@ -16,6 +17,7 @@ var DB *gorm.DB
 
 func InitDB() {
 	host := viper.GetString("mysql.host")
+	fmt.Println("host:", host)
 	port := viper.GetString("mysql.port")
 	database := viper.GetString("mysql.database")
 	username := viper.GetString("mysql.username")
@@ -23,6 +25,7 @@ func InitDB() {
 	charset := viper.GetString("mysql.charset")
 	dsn := strings.Join([]string{username, ":", password, "@tcp(", host, ":", port, ")/", database, "?charset=", charset + "&parseTime=True&loc=Local"}, "")
 	err := Database(dsn)
+	fmt.Println("dsn:", dsn)
 	if err != nil {
 		panic(err)
 	}
@@ -56,5 +59,6 @@ func Database(dsn string) error {
 	sqlDB.SetMaxOpenConns(100)                 //最大打开连接数
 	sqlDB.SetConnMaxLifetime(time.Second * 30) //连接最大存活时间
 	DB = db
+	migration()
 	return nil
 }
